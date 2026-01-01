@@ -23,13 +23,14 @@ export const register = async (req,res) => {
             sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
             maxAge: 7*24*60*60*1000
         });
-        // Sending welcome email
+        // Creating welcome email
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: email,
             subject: "Welcome to my App",
             text: `Welcome to this website. Your account has been created with email id: ${email}`
         }
+        // Sending welcome mail
         await transporter.sendMail(mailOptions);
         return res.json({ success: true });
     } catch(error) {
@@ -127,5 +128,14 @@ export const verifyEmail = async (req,res) => {
         return res.json({ success: true, message: "Email verified successfully" });
     } catch(error) {
         return res.json({ success: false, message: error.message });
+    }
+}
+
+// Check if user is authenticated
+export const isAuthenticated = async (req,res) => {
+    try {
+        return res.json({ success: true });
+    } catch(error) {
+        return res.json({ success: false, message: error.message })
     }
 }
